@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="ru" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Физика | Ускорение и Графическое описание движения</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            darkbg: '#0a0f1d',
+                            card: '#1e293b',
+                            accent: '#f59e0b',
+                            purple: '#8b5cf6'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome CDN for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,600&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0f1d;
+            color: #f3f4f6;
+            min-height: 100vh;
+        }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+        .btn-gradient-orange {
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            box-shadow: 0 4px 15px rgba(234, 88, 12, 0.35);
+        }
+        .btn-gradient-orange:hover {
+            background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
+            transform: translateY(-1px);
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center p-3 sm:p-6 select-none relative overflow-x-hidden min-h-screen">
+
+    <!-- Background Glow Effects -->
+    <div class="fixed -top-32 -left-32 w-80 h-80 bg-purple-600/20 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="fixed -bottom-32 -right-32 w-80 h-80 bg-amber-500/20 rounded-full blur-3xl pointer-events-none"></div>
+
+    <!-- Main Card Container -->
+    <main class="w-full max-w-md sm:max-w-xl glass-panel rounded-3xl p-5 sm:p-8 shadow-2xl relative z-10 my-auto border border-slate-700/60">
+
+        <!-- HEADER SECTION -->
+        <header class="text-center mb-6">
+            <div class="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-500 to-purple-600 text-white mb-3 shadow-lg shadow-amber-500/20">
+                <i class="fa-solid fa-gauge-high text-2xl"></i>
+            </div>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Физика</h1>
+            <p class="text-xs sm:text-sm text-slate-400 mt-1 font-medium">Ускорение. Единицы ускорения. Графическое описание движения</p>
+            <div class="inline-block mt-2 px-3 py-1 bg-slate-800/80 rounded-full border border-slate-700 text-xs text-amber-400 font-semibold">
+                <i class="fa-solid fa-school mr-1"></i> ОШ №6
+            </div>
+        </header>
+
+        <!-- SCREEN 1: START SCREEN -->
+        <section id="start-screen" class="animate-fade-in space-y-6">
+            <div class="bg-slate-800/60 rounded-2xl p-5 border border-slate-700/60">
+                <label for="student-name" class="block text-sm font-semibold text-slate-300 mb-2">
+                    <i class="fa-solid fa-user-graduate text-amber-400 mr-2"></i>Фамилия и имя ученика:
+                </label>
+                <input type="text" id="student-name" placeholder="Например: Иванов Иван" 
+                       class="w-full px-4 py-3.5 rounded-xl bg-slate-900/90 border border-slate-600/80 text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/30 transition text-base font-medium">
+                <p id="name-error" class="text-red-400 text-xs mt-2 hidden">Пожалуйста, укажите ваше имя и фамилию!</p>
+            </div>
+
+            <div class="space-y-3 bg-slate-800/40 p-4 rounded-2xl border border-slate-700/40 text-xs sm:text-sm text-slate-300">
+                <div class="flex items-center space-x-3">
+                    <i class="fa-solid fa-list-check text-purple-400 text-base"></i>
+                    <span><strong>10 вопросов:</strong> Определение ускорения, формулы, единицы измерения и графики v(t)</span>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <i class="fa-solid fa-chalkboard-user text-amber-400 text-base"></i>
+                    <span><strong>Преподаватель:</strong> Лесников Александр Сергеевич</span>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <i class="fa-solid fa-award text-emerald-400 text-base"></i>
+                    <span><strong>Награда:</strong> В конце вы сможете скачать именную Почетную грамоту</span>
+                </div>
+            </div>
+
+            <button id="start-btn" onclick="startQuiz()" class="w-full py-4 rounded-xl font-bold text-white text-lg btn-gradient-orange transition duration-200 flex items-center justify-center space-x-2">
+                <span>Начать тест</span>
+                <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </section>
+
+        <!-- SCREEN 2: QUIZ SCREEN -->
+        <section id="quiz-screen" class="hidden animate-fade-in space-y-6">
+            <!-- Progress & Score Indicator -->
+            <div class="space-y-2">
+                <div class="flex justify-between items-center text-xs sm:text-sm font-semibold text-slate-400">
+                    <span id="question-tracker">Вопрос 1 / 10</span>
+                    <span id="score-live-tracker" class="text-amber-400">0 баллов</span>
+                </div>
+                <div class="w-full bg-slate-800 rounded-full h-2.5 overflow-hidden border border-slate-700">
+                    <div id="progress-bar" class="bg-gradient-to-r from-amber-500 to-purple-500 h-2.5 rounded-full transition-all duration-300" style="width: 10%"></div>
+                </div>
+            </div>
+
+            <!-- Question Box -->
+            <div class="bg-slate-800/80 rounded-2xl p-5 border border-slate-700/80 shadow-md">
+                <h2 id="question-text" class="text-base sm:text-lg font-bold text-white leading-snug">
+                    <!-- Dynamic Question Text -->
+                </h2>
+            </div>
+
+            <!-- Answer Options Container -->
+            <div id="options-container" class="space-y-3">
+                <!-- Dynamic Options Buttons -->
+            </div>
+
+            <!-- Next Button -->
+            <div class="pt-2">
+                <button id="next-btn" onclick="nextQuestion()" disabled class="w-full py-3.5 rounded-xl font-bold text-white text-base bg-slate-700 cursor-not-allowed transition duration-200 flex items-center justify-center space-x-2 opacity-60">
+                    <span>Следующий вопрос</span>
+                    <i class="fa-solid fa-chevron-right text-sm"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- SCREEN 3: RESULTS SCREEN -->
+        <section id="result-screen" class="hidden animate-fade-in text-center space-y-6">
+            <div class="space-y-1">
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Тест завершен!</h2>
+                <p class="text-xs sm:text-sm text-slate-400">Результаты проведенного тестирования:</p>
+            </div>
+
+            <!-- Result Summary Box -->
+            <div class="bg-slate-900/80 rounded-2xl p-5 border border-slate-700/80 space-y-4 text-left shadow-inner">
+                <div class="flex items-center space-x-3 text-sm sm:text-base border-b border-slate-800 pb-3">
+                    <span class="text-blue-400 text-lg w-6 text-center"><i class="fa-solid fa-user"></i></span>
+                    <span class="text-slate-400">Ученик:</span>
+                    <strong id="res-student-name" class="text-white font-bold ml-auto text-right">--</strong>
+                </div>
+
+                <div class="flex items-center space-x-3 text-sm sm:text-base border-b border-slate-800 pb-3">
+                    <span class="text-purple-400 text-lg w-6 text-center"><i class="fa-solid fa-school"></i></span>
+                    <span class="text-slate-400">Учебное заведение:</span>
+                    <strong class="text-slate-200 font-semibold ml-auto">ОШ №6</strong>
+                </div>
+
+                <div class="flex items-center space-x-3 text-sm sm:text-base border-b border-slate-800 pb-3">
+                    <span class="text-rose-400 text-lg w-6 text-center"><i class="fa-solid fa-bullseye"></i></span>
+                    <span class="text-slate-400">Правильных ответов:</span>
+                    <strong id="res-correct-count" class="text-purple-400 font-bold ml-auto">0 / 10</strong>
+                </div>
+
+                <div class="flex items-center space-x-3 text-sm sm:text-base border-b border-slate-800 pb-3">
+                    <span class="text-emerald-400 text-lg w-6 text-center"><i class="fa-solid fa-chart-line"></i></span>
+                    <span class="text-slate-400">Процент успеваемости:</span>
+                    <strong id="res-percentage" class="text-emerald-400 font-bold ml-auto">0%</strong>
+                </div>
+
+                <div class="flex items-center space-x-3 text-sm sm:text-base pt-1">
+                    <span class="text-amber-400 text-lg w-6 text-center"><i class="fa-solid fa-medal"></i></span>
+                    <span class="text-slate-400">Итоговая оценка:</span>
+                    <strong id="res-grade" class="text-amber-400 font-extrabold text-lg ml-auto">«5» (Отлично!)</strong>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="space-y-3 pt-2">
+                <button onclick="openCertificateModal()" class="w-full py-4 rounded-xl font-bold text-white text-base btn-gradient-orange transition duration-200 flex items-center justify-center space-x-2 shadow-lg">
+                    <i class="fa-solid fa-certificate text-lg"></i>
+                    <span>Почетная грамота</span>
+                </button>
+
+                <button onclick="restartQuiz()" class="w-full py-3.5 rounded-xl font-semibold text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 border border-slate-700 transition duration-200 flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-rotate-right"></i>
+                    <span>Пересдать</span>
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- CERTIFICATE MODAL -->
+    <div id="cert-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-6 hidden animate-fade-in">
+        <div class="bg-slate-900 border border-slate-700 w-full max-w-2xl rounded-3xl p-4 sm:p-6 space-y-4 max-h-[90vh] overflow-y-auto relative">
+            <button onclick="closeCertificateModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-xl w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center border border-slate-700">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <h3 class="text-lg font-bold text-white text-center flex items-center justify-center gap-2">
+                <i class="fa-solid fa-award text-amber-400"></i> Почетная Грамота
+            </h3>
+
+            <!-- CERTIFICATE DISPLAY CANVAS CONTAINER -->
+            <div class="w-full flex justify-center overflow-hidden rounded-2xl border border-slate-700 bg-slate-950 p-2 shadow-2xl">
+                <canvas id="cert-canvas" width="800" height="560" class="w-full max-w-full h-auto rounded-lg shadow-inner"></canvas>
+            </div>
+
+            <!-- Modal Actions -->
+            <div class="flex flex-col sm:flex-row gap-3 pt-2">
+                <button onclick="downloadCertificate()" class="flex-1 py-3.5 rounded-xl font-bold text-white bg-emerald-600 hover:bg-emerald-500 transition flex items-center justify-center gap-2 shadow-lg">
+                    <i class="fa-solid fa-download"></i>
+                    <span>Скачать грамоту (PNG)</span>
+                </button>
+                <button onclick="closeCertificateModal()" class="py-3.5 px-6 rounded-xl font-semibold text-slate-300 bg-slate-800 hover:bg-slate-700 transition">
+                    Закрыть
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Physics Questions Data: Acceleration & Graphs of Motion
+        const quizQuestions = [
+            {
+                question: "1. Что такое ускорение в физике?",
+                options: [
+                    "Физическая величина, показывающая пройденный путь за единицу времени",
+                    "Физическая величина, характеризующая быстроту изменения скорости тела",
+                    "Сила, с которой Земля притягивает тело",
+                    "Длина траектории, по которой движется тело"
+                ],
+                correct: 1
+            },
+            {
+                question: "2. В каких единицах Международной системы (СИ) измеряется ускорение?",
+                options: [
+                    "Метр в секунду (м/с)",
+                    "Километр в час (км/ч)",
+                    "Метр на секунду в квадрате (м/с²)",
+                    "Ньютон (Н)"
+                ],
+                correct: 2
+            },
+            {
+                question: "3. Какая из приведенных формул определяет ускорение при равноускоренном прямолинейном движении?",
+                options: [
+                    "a = (v - v₀) / t",
+                    "a = v * t",
+                    "a = S / t²",
+                    "a = F * m"
+                ],
+                correct: 0
+            },
+            {
+                question: "4. Как направлен вектор ускорения при равнозамедленном движении тела?",
+                options: [
+                    "Совпадает по направлению с вектором скорости",
+                    "Противоположно направлению вектора скорости",
+                    "Перпендикулярно вектору скорости",
+                    "Ускорение при равнозамедленном движении равно нулю"
+                ],
+                correct: 1
+            },
+            {
+                question: "5. График зависимости скорости от времени v(t) представляет собой прямую горизонтальную линию, параллельную оси времени t. Каково движение тела?",
+                options: [
+                    "Тело находится в состоянии покоя",
+                    "Движение равноускоренное с постоянным ускорением",
+                    "Движение равномерное, ускорение равно нулю (a = 0)",
+                    "Движение равнозамедленное"
+                ],
+                correct: 2
+            },
+            {
+                question: "6. Что показывает модуль единицы измерения ускорения 1 м/с²?",
+                options: [
+                    "Тело проходит 1 метр за каждую секунду",
+                    "Скорость тела изменяется на 1 м/с за каждую секунду",
+                    "Тело увеличивает свой путь на 1 метр в квадратную секунду",
+                    "Сила, действующая на тело, равна 1 Ньютону"
+                ],
+                correct: 1
+            },
+            {
+                question: "7. На графике зависимости скорости v от времени t прямая наклонена вверх под углом к оси времени. О чем свидетельствует угол наклона данной прямой?",
+                options: [
+                    "Чем круче наклон прямой к оси t, тем больше модуль ускорения",
+                    "Угол наклона показывает пройденный путь",
+                    "Угол наклона показывает массу тела",
+                    "Наклон графике не имеет физического смысла"
+                ],
+                correct: 0
+            },
+            {
+                question: "8. Автомобиль, двигаясь из состояния покоя, за 5 секунд разогнался до скорости 15 м/с. Чему равно его ускорение?",
+                options: [
+                    "75 м/с²",
+                    "3 м/с²",
+                    "0,33 м/с²",
+                    "10 м/с²"
+                ],
+                correct: 1
+            },
+            {
+                question: "9. Какая геометрическая величина на графике зависимости скорости от времени v(t) численно равна пройденному телом пути?",
+                options: [
+                    "Длина линии графика",
+                    "Площадь фигуры под графиком скорости",
+                    "Угол наклона графика",
+                    "Периметр прямоугольника координат"
+                ],
+                correct: 1
+            },
+            {
+                question: "10. Поезд начинает торможение со скоростью 20 м/с с ускорением 0,5 м/с². Через какое время он полностью остановится?",
+                options: [
+                    "10 секунд",
+                    "20 секунд",
+                    "40 секунд",
+                    "100 секунд"
+                ],
+                correct: 2
+            }
+        ];
+
+        // Global Application State
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let selectedOptionIndex = null;
+        let studentName = "";
+
+        function startQuiz() {
+            const nameInput = document.getElementById("student-name");
+            const nameError = document.getElementById("name-error");
+            
+            const nameValue = nameInput.value.trim();
+            if (nameValue.length < 2) {
+                nameError.classList.remove("hidden");
+                nameInput.focus();
+                return;
+            }
+
+            nameError.classList.add("hidden");
+            studentName = nameValue;
+
+            currentQuestionIndex = 0;
+            score = 0;
+
+            document.getElementById("start-screen").classList.add("hidden");
+            document.getElementById("quiz-screen").classList.remove("hidden");
+
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            selectedOptionIndex = null;
+            const q = quizQuestions[currentQuestionIndex];
+
+            // Header & Tracker update
+            document.getElementById("question-tracker").innerText = `Вопрос ${currentQuestionIndex + 1} / ${quizQuestions.length}`;
+            document.getElementById("score-live-tracker").innerText = `${score} баллов`;
+            
+            const progressPercent = ((currentQuestionIndex + 1) / quizQuestions.length) * 100;
+            document.getElementById("progress-bar").style.width = `${progressPercent}%`;
+
+            // Question Text
+            document.getElementById("question-text").innerText = q.question;
+
+            // Options Construction
+            const optionsContainer = document.getElementById("options-container");
+            optionsContainer.innerHTML = "";
+
+            q.options.forEach((optText, idx) => {
+                const btn = document.createElement("button");
+                btn.className = "w-full text-left p-4 rounded-xl bg-slate-900/70 border border-slate-700/80 hover:border-slate-500 transition flex items-center justify-between group";
+                btn.onclick = () => selectOption(idx);
+                btn.id = `opt-btn-${idx}`;
+
+                btn.innerHTML = `
+                    <div class="flex items-center space-x-3 pr-2">
+                        <span class="w-7 h-7 shrink-0 rounded-lg bg-slate-800 border border-slate-600 text-xs font-bold text-slate-300 flex items-center justify-center group-hover:border-amber-400 group-hover:text-amber-400 transition">
+                            ${String.fromCharCode(65 + idx)}
+                        </span>
+                        <span class="text-sm font-medium text-slate-200 leading-snug">${optText}</span>
+                    </div>
+                    <i class="fa-regular fa-circle text-slate-500 group-hover:text-slate-300 opt-icon shrink-0"></i>
+                `;
+                optionsContainer.appendChild(btn);
+            });
+
+            // Disable Next Button until selection
+            const nextBtn = document.getElementById("next-btn");
+            nextBtn.disabled = true;
+            nextBtn.className = "w-full py-3.5 rounded-xl font-bold text-white text-base bg-slate-700 cursor-not-allowed transition duration-200 flex items-center justify-center space-x-2 opacity-60";
+        }
+
+        function selectOption(index) {
+            selectedOptionIndex = index;
+
+            // Reset options styles
+            quizQuestions[currentQuestionIndex].options.forEach((_, idx) => {
+                const btn = document.getElementById(`opt-btn-${idx}`);
+                if (btn) {
+                    btn.className = "w-full text-left p-4 rounded-xl bg-slate-900/70 border border-slate-700/80 hover:border-slate-500 transition flex items-center justify-between group";
+                    const icon = btn.querySelector(".opt-icon");
+                    if (icon) icon.className = "fa-regular fa-circle text-slate-500 shrink-0";
+                }
+            });
+
+            // Highlight chosen option
+            const selectedBtn = document.getElementById(`opt-btn-${index}`);
+            if (selectedBtn) {
+                selectedBtn.className = "w-full text-left p-4 rounded-xl bg-amber-500/10 border-2 border-amber-500 transition flex items-center justify-between";
+                const icon = selectedBtn.querySelector(".opt-icon");
+                if (icon) icon.className = "fa-solid fa-circle-check text-amber-400 shrink-0";
+            }
+
+            // Enable Next Button
+            const nextBtn = document.getElementById("next-btn");
+            nextBtn.disabled = false;
+            nextBtn.className = "w-full py-3.5 rounded-xl font-bold text-white text-base btn-gradient-orange transition duration-200 flex items-center justify-center space-x-2 shadow-lg";
+        }
+
+        function nextQuestion() {
+            if (selectedOptionIndex === null) return;
+
+            // Check correctness
+            if (selectedOptionIndex === quizQuestions[currentQuestionIndex].correct) {
+                score++;
+            }
+
+            currentQuestionIndex++;
+
+            if (currentQuestionIndex < quizQuestions.length) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            document.getElementById("quiz-screen").classList.add("hidden");
+            document.getElementById("result-screen").classList.remove("hidden");
+
+            const total = quizQuestions.length;
+            const percentage = Math.round((score / total) * 100);
+
+            let gradeText = "";
+            let gradeColorClass = "";
+
+            if (percentage >= 85) {
+                gradeText = "«5» (Отлично!)";
+                gradeColorClass = "text-emerald-400";
+            } else if (percentage >= 70) {
+                gradeText = "«4» (Хорошо!)";
+                gradeColorClass = "text-amber-400";
+            } else if (percentage >= 50) {
+                gradeText = "«3» (Удовлетворительно)";
+                gradeColorClass = "text-blue-400";
+            } else {
+                gradeText = "«2» (Неудовлетворительно)";
+                gradeColorClass = "text-rose-400";
+            }
+
+            document.getElementById("res-student-name").innerText = studentName;
+            document.getElementById("res-correct-count").innerText = `${score} / ${total}`;
+            document.getElementById("res-percentage").innerText = `${percentage}%`;
+            
+            const gradeEl = document.getElementById("res-grade");
+            gradeEl.innerText = gradeText;
+            gradeEl.className = `font-extrabold text-lg ml-auto ${gradeColorClass}`;
+        }
+
+        function restartQuiz() {
+            document.getElementById("result-screen").classList.add("hidden");
+            document.getElementById("start-screen").classList.remove("hidden");
+        }
+
+        function drawCertificate() {
+            const canvas = document.getElementById("cert-canvas");
+            const ctx = canvas.getContext("2d");
+
+            // Background Fill
+            ctx.fillStyle = "#0a0f1d";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Double Golden Frame
+            ctx.strokeStyle = "#f59e0b";
+            ctx.lineWidth = 6;
+            ctx.strokeRect(20, 20, canvas.width - 40, canvas.height - 40);
+
+            ctx.strokeStyle = "#78350f";
+            ctx.lineWidth = 2;
+            ctx.strokeRect(30, 30, canvas.width - 60, canvas.height - 60);
+
+            // Decorative Corners
+            drawCornerDecoration(ctx, 40, 40);
+            drawCornerDecoration(ctx, canvas.width - 40, 40);
+            drawCornerDecoration(ctx, 40, canvas.height - 40);
+            drawCornerDecoration(ctx, canvas.width - 40, canvas.height - 40);
+
+            // School & Subtitle
+            ctx.textAlign = "center";
+            ctx.fillStyle = "#94a3b8";
+            ctx.font = "bold 16px 'Inter', sans-serif";
+            ctx.fillText("ОШ №6", canvas.width / 2, 70);
+
+            // Header Title
+            ctx.fillStyle = "#f59e0b";
+            ctx.font = "bold 34px 'Playfair Display', Georgia, serif";
+            ctx.fillText("ПОЧЕТНАЯ ГРАМОТА", canvas.width / 2, 110);
+
+            ctx.fillStyle = "#cbd5e1";
+            ctx.font = "14px 'Inter', sans-serif";
+            ctx.fillText("ЗА УСПЕХИ В ИЗУЧЕНИИ ФИЗИКИ", canvas.width / 2, 138);
+
+            // Topic Line
+            ctx.fillStyle = "#38bdf8";
+            ctx.font = "italic 13px 'Inter', sans-serif";
+            ctx.fillText("Тема: «Ускорение. Единицы ускорения. Графическое описание движения»", canvas.width / 2, 160);
+
+            // Decorative Golden Line
+            ctx.strokeStyle = "#d97706";
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(canvas.width / 2 - 140, 175);
+            ctx.lineTo(canvas.width / 2 + 140, 175);
+            ctx.stroke();
+
+            // Awarded To Label
+            ctx.fillStyle = "#94a3b8";
+            ctx.font = "15px 'Inter', sans-serif";
+            ctx.fillText("Награждается ученик(ца):", canvas.width / 2, 215);
+
+            // Student Name
+            ctx.fillStyle = "#ffffff";
+            ctx.font = "bold 28px 'Inter', sans-serif";
+            ctx.fillText(studentName, canvas.width / 2, 255);
+
+            // Achievement Text
+            const percentage = Math.round((score / quizQuestions.length) * 100);
+            ctx.fillStyle = "#cbd5e1";
+            ctx.font = "14px 'Inter', sans-serif";
+            ctx.fillText("Успешно прошел(а) тематическое тестирование по физике.", canvas.width / 2, 295);
+
+            // Results Badge Box
+            ctx.fillStyle = "#1e293b";
+            if (ctx.roundRect) {
+                ctx.beginPath();
+                ctx.roundRect(canvas.width / 2 - 210, 320, 420, 75, 12);
+                ctx.fill();
+            } else {
+                ctx.fillRect(canvas.width / 2 - 210, 320, 420, 75);
+            }
+            ctx.strokeStyle = "#334155";
+            ctx.stroke();
+
+            ctx.fillStyle = "#fbbf24";
+            ctx.font = "bold 17px 'Inter', sans-serif";
+            ctx.fillText(`Результат: ${score} / ${quizQuestions.length}  (${percentage}%)`, canvas.width / 2, 353);
+
+            let gradeLabel = percentage >= 85 ? "«5» (Отлично)" : percentage >= 70 ? "«4» (Хорошо)" : percentage >= 50 ? "«3» (Удовлетворительно)" : "«2»";
+            ctx.fillStyle = "#38bdf8";
+            ctx.font = "14px 'Inter', sans-serif";
+            ctx.fillText(`Итоговая оценка: ${gradeLabel}`, canvas.width / 2, 378);
+
+            // Stamp Seal Graphics
+            ctx.beginPath();
+            ctx.arc(110, 465, 40, 0, Math.PI * 2);
+            ctx.fillStyle = "rgba(245, 158, 11, 0.12)";
+            ctx.fill();
+            ctx.strokeStyle = "#f59e0b";
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            ctx.fillStyle = "#f59e0b";
+            ctx.font = "bold 10px 'Inter', sans-serif";
+            ctx.fillText("ОШ №6", 110, 460);
+            ctx.fillText("ФИЗИКА", 110, 474);
+
+            // Date & Teacher
+            const today = new Date().toLocaleDateString("ru-RU");
+            ctx.textAlign = "right";
+            ctx.fillStyle = "#cbd5e1";
+            ctx.font = "14px 'Inter', sans-serif";
+            ctx.fillText(`Дата: ${today}`, canvas.width - 60, 455);
+            ctx.fillStyle = "#ffffff";
+            ctx.font = "semibold 14px 'Inter', sans-serif";
+            ctx.fillText(`Учитель: Лесников Александр Сергеевич`, canvas.width - 60, 480);
+        }
+
+        function drawCornerDecoration(ctx, x, y) {
+            ctx.strokeStyle = "#f59e0b";
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(x, y, 12, 0, Math.PI * 2);
+            ctx.stroke();
+        }
+
+        function openCertificateModal() {
+            drawCertificate();
+            document.getElementById("cert-modal").classList.remove("hidden");
+        }
+
+        function closeCertificateModal() {
+            document.getElementById("cert-modal").classList.add("hidden");
+        }
+
+        function downloadCertificate() {
+            const canvas = document.getElementById("cert-canvas");
+            const image = canvas.toDataURL("image/png");
+            
+            const link = document.createElement("a");
+            link.download = `Грамота_${studentName.replace(/\s+/g, '_')}_ОШ6.png`;
+            link.href = image;
+            link.click();
+        }
+
+        // Enter key event listener for quick start
+        document.getElementById("student-name").addEventListener("keyup", function(event) {
+            if (event.key === "Enter") {
+                startQuiz();
+            }
+        });
+    </script>
+</body>
+</html>
